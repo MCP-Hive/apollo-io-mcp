@@ -9,7 +9,7 @@
 >    APOLLO_API_KEY=... npx -y github:MCP-Hive/apollo-io-mcp
 >    ```
 >
-> After changing `src/`, rebuild and commit the bundle: `npm ci && npm run bundle && npm run smoketest`. Do not re-add a `prepare` script — npm installs all devDependencies for a git install whenever one is present.
+> After changing `src/`, rebuild and commit the bundle: `npm ci && npm run bundle && npm run smoketest`. Do not add a `build`, `prepare`, `prepack`, `preinstall`, `install` or `postinstall` script — npm installs every devDependency for a git install whenever one is present, which is why upstream's `build` is renamed `build:dist` here.
 >
 > The original README follows.
 

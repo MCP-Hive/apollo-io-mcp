@@ -33,7 +33,7 @@ jobs:
         run: npm test
         
       - name: Build package
-        run: npm run build
+        run: npm run build:dist
 
       - name: Build MCPB bundle
         run: npm run build:mcpb

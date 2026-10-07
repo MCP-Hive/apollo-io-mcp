@@ -93,7 +93,7 @@ function main() {
   
   // Build package
   console.log('🔨 Building package...');
-  runCommand('npm run build');
+  runCommand('npm run build:dist');
 
   // Build MCPB bundle for GitHub release assets
   console.log('📦 Building MCPB bundle...');
