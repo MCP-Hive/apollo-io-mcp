@@ -1,7 +1,7 @@
 {
   "name": "@thevgergroup/apollo-io-mcp",
   "version": "3.0.0",
-  "description": "Model Context Protocol (MCP) server for Apollo.io API integration",
+  "description": "MCP server for Apollo.io. Fork of @thevgergroup/apollo-io-mcp that forwards webhook_url (required by Apollo for phone reveals) and ships a prebuilt bundle for one-line npx activation.",
   "keywords": [
     "mcp",
     "apollo",
@@ -13,38 +13,29 @@
     "mcpb",
     "sales-intelligence"
   ],
-  "author": "The VGER Group",
+  "author": "MCP-Hive (fork of The VGER Group original)",
   "license": "MIT",
   "type": "module",
-  "main": "dist/server.js",
   "bin": {
-    "apollo-io-mcp": "dist/server.js",
-    "apollo-io-cli": "dist/cli.js",
-    "apollo-io-mcp-setup": "dist/cli.js"
+    "apollo-io-mcp": "server/bundle.mjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thevgergroup/apollo-io-mcp.git"
+    "url": "git+https://github.com/MCP-Hive/apollo-io-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/thevgergroup/apollo-io-mcp/issues"
+    "url": "https://github.com/MCP-Hive/apollo-io-mcp/issues"
   },
-  "homepage": "https://github.com/thevgergroup/apollo-io-mcp#readme",
+  "homepage": "https://github.com/MCP-Hive/apollo-io-mcp#readme",
   "engines": {
     "node": ">=22.19.0"
-  },
-  "publishConfig": {
-    "access": "public",
-    "provenance": true,
-    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "build": "npm run clean && tsc -p tsconfig.json && node scripts/post-build.js",
     "dev": "tsx watch src/server.ts",
     "setup:dev": "scripts/setup-dev.sh",
-    "start": "node dist/server.js",
-    "prepare": "npm run build",
+    "start": "node server/bundle.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -58,32 +49,31 @@
     "prepublishOnly": "npm run build && npm test",
     "release:patch": "node scripts/release.js patch",
     "release:minor": "node scripts/release.js minor",
-    "release:major": "node scripts/release.js major"
+    "release:major": "node scripts/release.js major",
+    "bundle": "node build-bundle.mjs",
+    "smoketest": "node smoketest/smoketest.mjs"
   },
-  "dependencies": {
+  "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.17.4",
     "dotenv": "^18.0.0",
     "undici": "^8.10.0",
-    "zod": "^4.2.1"
-  },
-  "devDependencies": {
+    "zod": "^4.2.1",
     "@anthropic-ai/mcpb": "^2.1.2",
     "@modelcontextprotocol/inspector": "^2.0.0",
     "@types/node": "^26.0.0",
     "@vitest/coverage-v8": "^5.0.2",
     "tsx": "^4.19.1",
     "typescript": "^5.5.4",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.2",
+    "esbuild": "^0.24.0"
   },
   "overrides": {
     "minimatch": "^10.0.0",
     "tmp": "^0.2.6"
   },
   "files": [
-    "dist",
+    "server",
     "README.md",
-    "CLI.md",
-    "llms.txt",
     "LICENSE"
   ]
 }

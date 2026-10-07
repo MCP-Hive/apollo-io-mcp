@@ -1,3 +1,20 @@
+# Apollo.io MCP Server (MCP-Hive fork)
+
+> **This is an MCP-Hive fork of [thevgergroup/apollo-io-mcp](https://github.com/thevgergroup/apollo-io-mcp).** It differs from upstream in two ways:
+>
+> 1. `apollo_enrich_person` and `apollo_bulk_enrich_people` accept an optional `webhook_url`, which is forwarded to Apollo as a query parameter. Apollo delivers revealed phone numbers asynchronously to that URL, and rejects `reveal_phone_number: true` without one (`SEARCH.VALIDATION.WEBHOOK_URL_REQUIRED`), so upstream cannot reveal phone numbers at all.
+> 2. It ships a prebuilt, dependency-free `server/bundle.mjs`, so it starts with one line and installs nothing:
+>
+>    ```bash
+>    APOLLO_API_KEY=... npx -y github:MCP-Hive/apollo-io-mcp
+>    ```
+>
+> After changing `src/`, rebuild and commit the bundle: `npm ci && npm run bundle && npm run smoketest`. Do not re-add a `prepare` script — npm installs all devDependencies for a git install whenever one is present.
+>
+> The original README follows.
+
+---
+
 # Apollo.io MCP Server and CLI
 
 ![Apollo.io MCP Server](https://github.com/thevgergroup/apollo-io-mcp/raw/main/docs/apollo_logo_social.jpg)

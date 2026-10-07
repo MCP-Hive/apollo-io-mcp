@@ -86,11 +86,17 @@ export class ApolloClient {
   }
 
   // Enrich person (match) - using people/match with query params
-  matchPerson(params: Record<string, unknown>, revealPersonalEmails: boolean = false, revealPhoneNumber: boolean = false) {
+  //
+  // Apollo delivers revealed phone numbers asynchronously, by POSTing them to
+  // `webhook_url`, and rejects reveal_phone_number=true without one
+  // (SEARCH.VALIDATION.WEBHOOK_URL_REQUIRED). It is a query parameter, not a
+  // body field.
+  matchPerson(params: Record<string, unknown>, revealPersonalEmails: boolean = false, revealPhoneNumber: boolean = false, webhookUrl?: string) {
     const queryParams = new URLSearchParams({
       reveal_personal_emails: revealPersonalEmails.toString(),
       reveal_phone_number: revealPhoneNumber.toString()
     });
+    if (webhookUrl) queryParams.set("webhook_url", webhookUrl);
     return this.post(`/people/match?${queryParams}`, params);
   }
 
@@ -100,11 +106,12 @@ export class ApolloClient {
   }
 
   // Bulk People Enrichment - using people/bulk_match with query params
-  bulkEnrichPeople(params: Record<string, unknown>, revealPersonalEmails: boolean = false, revealPhoneNumber: boolean = false) {
+  bulkEnrichPeople(params: Record<string, unknown>, revealPersonalEmails: boolean = false, revealPhoneNumber: boolean = false, webhookUrl?: string) {
     const queryParams = new URLSearchParams({
       reveal_personal_emails: revealPersonalEmails.toString(),
       reveal_phone_number: revealPhoneNumber.toString()
     });
+    if (webhookUrl) queryParams.set("webhook_url", webhookUrl);
     return this.post(`/people/bulk_match?${queryParams}`, params);
   }
 

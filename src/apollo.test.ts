@@ -188,6 +188,24 @@ describe('ApolloClient', () => {
         }
       );
     });
+
+    it('should pass webhook_url as a query param when given', async () => {
+      const mockResponse = {
+        statusCode: 200,
+        body: {
+          json: vi.fn().mockResolvedValue({ person: {} })
+        }
+      };
+      mockRequest.mockResolvedValue(mockResponse as any);
+
+      const params = { email: 'test@example.com' };
+      await client.matchPerson(params, false, true, 'https://hooks.example.com/apollo/abc?x=1');
+
+      expect(mockRequest).toHaveBeenCalledWith(
+        'https://api.apollo.io/api/v1/people/match?reveal_personal_emails=false&reveal_phone_number=true&webhook_url=https%3A%2F%2Fhooks.example.com%2Fapollo%2Fabc%3Fx%3D1',
+        expect.objectContaining({ method: 'POST', body: JSON.stringify(params) })
+      );
+    });
   });
 
   describe('matchCompany', () => {
@@ -240,6 +258,24 @@ describe('ApolloClient', () => {
           },
           body: JSON.stringify(params)
         }
+      );
+    });
+
+    it('should pass webhook_url as a query param when given', async () => {
+      const mockResponse = {
+        statusCode: 200,
+        body: {
+          json: vi.fn().mockResolvedValue({ people: [] })
+        }
+      };
+      mockRequest.mockResolvedValue(mockResponse as any);
+
+      const params = { people: [{ email: 'test@example.com' }] };
+      await client.bulkEnrichPeople(params, false, true, 'https://hooks.example.com/apollo/abc?x=1');
+
+      expect(mockRequest).toHaveBeenCalledWith(
+        'https://api.apollo.io/api/v1/people/bulk_match?reveal_personal_emails=false&reveal_phone_number=true&webhook_url=https%3A%2F%2Fhooks.example.com%2Fapollo%2Fabc%3Fx%3D1',
+        expect.objectContaining({ method: 'POST', body: JSON.stringify(params) })
       );
     });
   });
